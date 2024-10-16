@@ -1,0 +1,7 @@
+{
+    "project_id": "phrasal-bruin-436217-e9",
+    "dataset_id": "demotest",
+    "input_table": "Table_1_Partners_Input",
+    "output_table": "Table2_Partners_SCD2",
+    "id_column": "PartnerID"
+}
