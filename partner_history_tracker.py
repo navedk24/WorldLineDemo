@@ -8,7 +8,7 @@ from google.cloud import bigquery
 
 # Set up logging configuration
 logging.basicConfig(
-    filename='scd2_script.log',
+    filename='partner_history_tracker.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
@@ -24,13 +24,6 @@ def generate_technical_key():
 def apply_scd2_logic(client, dataset_id, input_table, output_table, id_column):
     """
     Apply Slowly Changing Dimensions Type 2 (SCD2) logic.
-
-    Parameters:
-    - client: BigQuery client object.
-    - dataset_id: ID of the dataset in BigQuery.
-    - input_table: The source table to read from.
-    - output_table: The destination table to write the historical records.
-    - id_column: The unique identifier for the records.
     """
     try:
         # Step 1: Load current data from input_table
@@ -88,7 +81,6 @@ def apply_scd2_logic(client, dataset_id, input_table, output_table, id_column):
                 df_scd2 = pd.concat([df_scd2, pd.DataFrame([new_record])], ignore_index=True)
 
         # Step 5: Write the updated DataFrame back to BigQuery
-        #df_scd2.to_gbq(f'{dataset_id}.{output_table}', if_exists = 'replace')
         pandas_gbq.to_gbq(df_scd2, f'{dataset_id}.{output_table}', project_id=client.project, if_exists='replace')
         logging.info(f"Table {output_table} updated with SCD2 logic and written back to BigQuery.")
 
